@@ -1,0 +1,135 @@
+openapi: 3.0.3
+info:
+  title: PasteHub Backend API
+  version: 1.0.0
+servers:
+  - url: http://localhost:5001
+paths:
+  /api/v1/auth/register:
+    post:
+      summary: Register a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username: { type: string }
+                password: { type: string }
+                email: { type: string, nullable: true }
+      responses:
+        '201':
+          description: Registered
+  /api/v1/auth/login:
+    post:
+      summary: Login user
+      responses:
+        '200':
+          description: Authenticated
+  /api/v1/auth/refresh:
+    post:
+      summary: Rotate refresh token
+      responses:
+        '200': { description: Refreshed }
+  /api/v1/auth/logout:
+    post:
+      summary: Revoke refresh token
+      responses:
+        '200': { description: Logged out }
+  /api/v1/pastes:
+    post:
+      summary: Create paste
+      responses:
+        '201': { description: Created }
+  /api/v1/pastes/file:
+    post:
+      summary: Upload file paste (multipart/form-data)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+                visibility:
+                  type: string
+                  enum: [public, unlisted, private]
+                expires_in:
+                  type: string
+                  enum: [10m, 1h, 1d, 1w, 1m, never]
+                password:
+                  type: string
+                tags:
+                  type: string
+      responses:
+        '201': { description: Created }
+  /api/v1/pastes/recent:
+    get:
+      summary: List recent public pastes
+      responses:
+        '200': { description: Paginated list }
+  /api/v1/pastes/{slug}:
+    get:
+      summary: Read paste with metadata and content
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Paste found }
+        '404': { description: Not found }
+    patch:
+      summary: Update paste
+      responses:
+        '200': { description: Updated }
+    delete:
+      summary: Delete paste
+      responses:
+        '200': { description: Deleted }
+  /api/v1/pastes/{slug}/raw:
+    get:
+      summary: Read raw content
+      responses:
+        '200': { description: Raw content }
+  /api/v1/pastes/{slug}/download:
+    get:
+      summary: Download file content
+      responses:
+        '200': { description: File download }
+  /api/v1/me/pastes:
+    get:
+      summary: List current user's pastes
+      responses:
+        '200': { description: Paginated list }
+  /api/v1/pastes/{slug}/report:
+    post:
+      summary: Report abuse for a paste
+      responses:
+        '201': { description: Report created }
+  /api/v1/admin/reports:
+    get:
+      summary: List abuse reports (admin)
+      responses:
+        '200': { description: Reports }
+  /api/v1/admin/reports/{id}:
+    patch:
+      summary: Update report status (admin)
+      responses:
+        '200': { description: Updated }
+  /api/v1/admin/pastes/{slug}:
+    delete:
+      summary: Delete/disable paste (admin)
+      responses:
+        '200': { description: Deleted }
+  /api/v1/admin/users/{id}/ban:
+    patch:
+      summary: Ban/unban user (admin)
+      responses:
+        '200': { description: User updated }

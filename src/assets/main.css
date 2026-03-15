@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('./fonts/YekanBakh-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('./fonts/YekanBakh-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('./fonts/YekanBakh-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'YekanBakh';
+  src: url('./fonts/YekanBakh-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  direction: rtl;
+  font-family: 'YekanBakh', 'Tahoma', 'Segoe UI', sans-serif;
+  background:
+    radial-gradient(circle at 14% 14%, rgba(14, 165, 233, 0.15), transparent 34%),
+    radial-gradient(circle at 86% 84%, rgba(15, 23, 42, 0.08), transparent 38%),
+    linear-gradient(150deg, #f8fafc 0%, #f1f5f9 50%, #eef2f7 100%);
+  background-attachment: fixed;
+  color: var(--bc);
+}
+
+textarea,
+input,
+select {
+  direction: rtl;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--p) 24%, transparent);
+}
+
+@layer components {
+  .app-shell {
+    @apply relative min-h-screen;
+  }
+
+  .app-shell::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.16));
+    z-index: 0;
+  }
+
+  .app-content {
+    @apply relative z-10 flex min-h-screen flex-col;
+  }
+
+  .surface {
+    background: color-mix(in oklab, var(--b1) 84%, white) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid color-mix(in oklab, var(--bc) 12%, transparent) !important;
+    box-shadow: 0 15px 38px -26px color-mix(in oklab, var(--bc) 42%, transparent);
+  }
+
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/70 focus-visible:ring-offset-2;
+  }
+
+  .panel-soft {
+    @apply rounded-2xl border border-base-300/70 bg-base-100/70 p-4 md:p-5;
+  }
+}
+
+.btn {
+  @apply transition-all duration-200;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.input,
+.select,
+.textarea {
+  @apply bg-base-100/90;
+}
+
+.textarea {
+  line-height: 1.9;
+}
